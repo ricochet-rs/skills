@@ -15,7 +15,7 @@
     "com.openai": {
       "interface": {
         "displayName": "Ricochet Admin",
-        "shortDescription": "Install and run a Ricochet server",
+        "shortDescription": "Install and run Ricochet",
         "longDescription": "Install Ricochet on a Linux host, in Docker, or on Kubernetes. Configure OIDC or SAML sign-in, execution backends, Postgres, package repositories, retention, logs, metrics, tracing, audit logs, users, and licenses.",
         "developerName": "Ricochet",
         "category": "Productivity",

@@ -15,7 +15,7 @@
     "com.openai": {
       "interface": {
         "displayName": "Ricochet",
-        "shortDescription": "Deploy R, Python, and Julia work",
+        "shortDescription": "Deploy R, Python, and Julia",
         "longDescription": "Deploy Shiny apps, Plumber and FastAPI services, Quarto reports, Jupyter notebooks, and R, Python, and Julia scripts to Ricochet. Schedule tasks, read the signed-in user, set CPU and memory, scale apps, call the REST API, and fix failed deployments.",
         "developerName": "Ricochet",
         "category": "Productivity",
