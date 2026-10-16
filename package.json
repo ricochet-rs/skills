@@ -1,0 +1,25 @@
+{
+  "name": "@ricochet-rs/agent-discovery",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./discovery/index.ts",
+    "./artifacts": "./discovery/artifacts.ts",
+    "./policy": "./discovery/policy.ts"
+  },
+  "scripts": {
+    "test": "bun test discovery",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "node-html-parser": "^9.0.1",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.0",
+    "@types/turndown": "^5.0.6",
+    "typescript": "^5.9.0"
+  }
+}

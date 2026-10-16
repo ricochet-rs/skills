@@ -1,3 +1,4 @@
 plugins/*/evals/results/
 .DS_Store
 *.zip
+node_modules/

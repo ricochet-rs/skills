@@ -113,6 +113,12 @@ Each skill is a folder with a `SKILL.md`, optional `references/`, and `agents/op
 
 ---
 
+## Support
+
+Ask questions in [GitHub Discussions](https://github.com/orgs/ricochet-rs/discussions), on [Discord](https://discord.gg/ctWt3du7aw), or on [Matrix](https://matrix.ricochet.rs), or email contact@ricochet.rs.
+
+---
+
 ## Development
 
 Validate the Claude Code manifests:
@@ -133,9 +139,26 @@ claude plugin eval plugins/ricochet-admin
 When a CLI command, flag, or error message changes, update `ricochet-cli` in the same release.
 Bump `version` in both manifests of a plugin when its skills change.
 
-## Support
+---
 
-Ask questions in [GitHub Discussions](https://github.com/orgs/ricochet-rs/discussions), on [Discord](https://discord.gg/ctWt3du7aw), or on [Matrix](https://matrix.ricochet.rs), or email contact@ricochet.rs.
+## Agent discovery package
+
+`discovery/` is `@ricochet-rs/agent-discovery`, an Astro integration that docs.ricochet.rs and ricochet.rs both install with `bun add github:ricochet-rs/skills`.
+On every build it publishes the same agent files on both sites:
+
+- `robots.txt` with Content Signals and named AI crawlers
+- a markdown twin of every page, `llms.txt`, and `llms-full.txt`
+- `/.well-known/agent-skills/`, with every skill in this repository downloaded fresh from `main`
+- `/.well-known/api-catalog`, `/openapi.json`, and `/.well-known/ai-catalog.json`
+
+Each eval prompt becomes an example query for the skill its grader loads, so a new eval also improves `ai-catalog.json`.
+Change the shared crawler list, Content Signals, and link relations in `discovery/policy.ts` and `discovery/artifacts.ts`.
+
+```sh
+bun install
+bun test discovery
+bunx tsc --noEmit
+```
 
 ## License
 
