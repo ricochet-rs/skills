@@ -1,0 +1,25 @@
+{
+  "name": "ricochet-rs",
+  "owner": {
+    "name": "Ricochet",
+    "url": "https://ricochet.rs"
+  },
+  "metadata": {
+    "description": "Skills for deploying R, Julia, and Python applications, reports, and scripts to Ricochet.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ricochet",
+      "source": "./plugins/ricochet",
+      "description": "Deploy and run Shiny apps, APIs, Quarto reports, notebooks, and R, Python, and Julia scripts on Ricochet.",
+      "category": "development"
+    },
+    {
+      "name": "ricochet-admin",
+      "source": "./plugins/ricochet-admin",
+      "description": "Install, configure, and run a Ricochet server, including sign-in, execution backends, databases, monitoring, and licensing.",
+      "category": "development"
+    }
+  ]
+}

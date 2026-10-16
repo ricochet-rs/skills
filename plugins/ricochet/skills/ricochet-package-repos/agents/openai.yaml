@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Package Repos"
+  short_description: "Choose where Ricochet installs packages from"
+  default_prompt: "Use $ricochet-package-repos to set the package repositories for this project."

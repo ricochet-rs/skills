@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Resources"
+  short_description: "Set CPU and memory for apps and tasks"
+  default_prompt: "Use $ricochet-resources to give this task more memory."

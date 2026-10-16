@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Troubleshooting"
+  short_description: "Find out why Ricochet content fails"
+  default_prompt: "Use $ricochet-troubleshooting to find out why this deployment failed."

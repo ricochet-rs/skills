@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Scheduling"
+  short_description: "Run Ricochet tasks on a schedule"
+  default_prompt: "Use $ricochet-scheduling to run this task every weekday morning."

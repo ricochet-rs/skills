@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Execution"
+  short_description: "Choose where apps and tasks run"
+  default_prompt: "Use $ricochet-execution to run content in Docker containers."

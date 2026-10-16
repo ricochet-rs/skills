@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Sign-in"
+  short_description: "Set up SSO, roles, and users"
+  default_prompt: "Use $ricochet-sign-in to connect Ricochet to our identity provider."

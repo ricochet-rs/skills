@@ -1,0 +1,27 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ricochet-admin",
+  "version": "0.1.0",
+  "description": "Install, configure, and run a Ricochet server, including sign-in, execution backends, databases, monitoring, and licensing.",
+  "author": {
+    "name": "Ricochet",
+    "url": "https://ricochet.rs"
+  },
+  "homepage": "https://ricochet.rs",
+  "repository": "https://github.com/ricochet-rs/skills",
+  "keywords": ["ricochet", "self-hosted", "kubernetes", "helm", "docker", "oidc", "saml", "prometheus", "opentelemetry"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Ricochet Admin",
+        "shortDescription": "Install and run a Ricochet server",
+        "longDescription": "Install Ricochet on a Linux host, in Docker, or on Kubernetes. Configure OIDC or SAML sign-in, execution backends, Postgres, package repositories, retention, logs, metrics, tracing, audit logs, users, and licenses.",
+        "developerName": "Ricochet",
+        "category": "Productivity",
+        "capabilities": [],
+        "websiteURL": "https://ricochet.rs",
+        "defaultPrompt": "Install Ricochet on this server."
+      }
+    }
+  }
+}

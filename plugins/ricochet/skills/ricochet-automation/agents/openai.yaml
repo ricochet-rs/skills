@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Automation"
+  short_description: "Trigger Ricochet from webhooks and CI"
+  default_prompt: "Use $ricochet-automation to run this task when the repository is pushed."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Scaling"
+  short_description: "Scale apps across instances"
+  default_prompt: "Use $ricochet-scaling to keep this app responsive under load."

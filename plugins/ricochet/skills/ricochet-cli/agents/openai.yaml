@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet CLI"
+  short_description: "Deploy and operate Ricochet content items"
+  default_prompt: "Use $ricochet-cli to deploy and manage this Ricochet content item."

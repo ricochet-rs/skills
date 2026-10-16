@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Install"
+  short_description: "Install and upgrade a Ricochet server"
+  default_prompt: "Use $ricochet-install to install Ricochet on this server."

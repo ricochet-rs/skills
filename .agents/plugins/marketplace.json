@@ -1,0 +1,32 @@
+{
+  "name": "ricochet-rs",
+  "interface": {
+    "displayName": "Ricochet"
+  },
+  "plugins": [
+    {
+      "name": "ricochet",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ricochet"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "ricochet-admin",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ricochet-admin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

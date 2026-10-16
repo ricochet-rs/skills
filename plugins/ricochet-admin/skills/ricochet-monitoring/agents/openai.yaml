@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Monitoring"
+  short_description: "Metrics, traces, logs, and audit"
+  default_prompt: "Use $ricochet-monitoring to scrape Ricochet with Prometheus."

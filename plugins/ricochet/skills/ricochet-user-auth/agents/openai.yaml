@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet User Auth"
+  short_description: "Identify the signed-in user in a Ricochet app"
+  default_prompt: "Use $ricochet-user-auth to show the signed-in user in this app."

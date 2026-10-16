@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Apps"
+  short_description: "Make R, Python, and Julia content run on Ricochet"
+  default_prompt: "Use $ricochet-apps to make this project run on Ricochet."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet REST API"
+  short_description: "Call the Ricochet REST API from code"
+  default_prompt: "Use $ricochet-rest-api to run this task from code and wait for it."

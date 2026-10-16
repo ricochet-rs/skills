@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Licensing"
+  short_description: "Editions and license keys"
+  default_prompt: "Use $ricochet-licensing to add our license to this server."

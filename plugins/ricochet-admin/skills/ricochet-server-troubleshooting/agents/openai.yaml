@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Server Troubleshooting"
+  short_description: "Fix server, sign-in, and deploy problems"
+  default_prompt: "Use $ricochet-server-troubleshooting to find out why users cannot sign in."

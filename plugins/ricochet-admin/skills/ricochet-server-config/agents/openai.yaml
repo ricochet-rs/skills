@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ricochet Server Config"
+  short_description: "Configure ricochet-config.toml"
+  default_prompt: "Use $ricochet-server-config to move this server to Postgres."
