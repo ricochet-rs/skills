@@ -4,6 +4,24 @@ Agent skills that deploy and run your R, Julia, and Python work on [ricochet](ht
 
 Use natural langauge to connect to a `ricochet` server, deploy an application, trigger a script via REST API, and more.
 
+## Install
+
+In Claude Code:
+
+```bash
+/plugin marketplace add ricochet-rs/skills
+/plugin install ricochet@ricochet-rs
+/plugin install ricochet-admin@ricochet-rs
+```
+
+In Codex:
+
+```bash
+codex plugin marketplace add ricochet-rs/skills
+```
+
+Then install **Ricochet** or **Ricochet Admin** from the Codex plugins directory.
+
 ## Plugins
 
 | Plugin           | Persona                        | Skills                                                                                              |
@@ -12,24 +30,6 @@ Use natural langauge to connect to a `ricochet` server, deploy an application, t
 | `ricochet-admin` | Server administrators          | Installing, configuring, securing, and monitoring a self-hosted Ricochet server                     |
 
 Use `ricochet` if you are a user of a ricochet server and `ricochet-admin` if you want to install or maintain a ricochet server.
-
-## Install
-
-In Claude Code:
-
-```text
-/plugin marketplace add ricochet-rs/skills
-/plugin install ricochet@ricochet-rs
-/plugin install ricochet-admin@ricochet-rs
-```
-
-In Codex:
-
-```sh
-codex plugin marketplace add ricochet-rs/skills
-```
-
-Then install **Ricochet** or **Ricochet Admin** from the Codex plugins directory.
 
 ## Create an instance
 
