@@ -21,6 +21,11 @@
         "category": "Productivity",
         "capabilities": [],
         "websiteURL": "https://ricochet.rs",
+        "supportURL": "https://github.com/orgs/ricochet-rs/discussions",
+        "privacyPolicyURL": "https://ricochet.rs/legal/privacy/",
+        "termsOfServiceURL": "https://ricochet.rs/legal/terms/",
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png",
         "defaultPrompt": "Deploy this project to Ricochet."
       }
     }
