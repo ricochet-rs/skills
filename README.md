@@ -136,3 +136,7 @@ Bump `version` in both manifests of a plugin when its skills change.
 ## Support
 
 Ask questions in [GitHub Discussions](https://github.com/orgs/ricochet-rs/discussions), on [Discord](https://discord.gg/ctWt3du7aw), or on [Matrix](https://matrix.ricochet.rs), or email contact@ricochet.rs.
+
+## License
+
+[MIT](LICENSE)
