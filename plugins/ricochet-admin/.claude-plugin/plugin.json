@@ -8,6 +8,8 @@
   },
   "homepage": "https://ricochet.rs",
   "license": "MIT",
+  "privacyPolicyUrl": "https://ricochet.rs/legal/privacy/",
+  "termsOfServiceUrl": "https://ricochet.rs/legal/terms/",
   "repository": "https://github.com/ricochet-rs/skills",
   "keywords": ["ricochet", "self-hosted", "kubernetes", "helm", "docker", "oidc", "saml", "prometheus", "opentelemetry"]
 }
