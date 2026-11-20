@@ -40,7 +40,7 @@ ricochet task schedule <ID> "30 6 * * 1-5"
 `ricochet task settings update` does not send `[schedule]`, so editing the file and running it leaves the schedule unchanged.
 
 After changing it, also update `[schedule]` in the local file so it matches the server.
-The task's overview page in the web UI shows the next run time, which confirms the new schedule.
+The task's overview page in the web UI shows the next run time.
 
 From code, `PATCH /api/v0/content/<ID>/schedule` with `{"schedule": "30 6 * * 1-5"}` does the same, as described in the `ricochet-rest-api` skill.
 
@@ -71,9 +71,9 @@ Five fields, or six with a leading seconds field:
 
 ## Patterns
 
-- **A report that refreshes itself**: add `[static]` to a scheduled R Markdown, Quarto, or Jupyter task, and each run republishes the HTML at the same URL.
-- **A script that accumulates data**: write results under `persistent/`, which survives redeploys, and append to a SQLite database rather than a shared text file.
-- **Credentials for the job**: set them with `ricochet task env-vars set`, never in the script.
+- To keep a report current, add `[static]` to a scheduled R Markdown, Quarto, or Jupyter task. Each run republishes the HTML at the same URL.
+- To collect data across runs, write results under `persistent/`, which survives redeploys, and append to a SQLite database instead of a shared text file.
+- Set the job's credentials with `ricochet task env-vars set`, never in the script.
 
 ## Email the result
 
@@ -100,7 +100,7 @@ Set it on the task's **Settings**, then **Email** tab, or from code with `PUT /a
 - The `PUT` replaces every field, so read the current settings with `GET` on the same path first.
 - Editors choose which email each collaborator gets on the item's **Collaborators** tab, and users can turn their own email down in their profile.
 
-## Things to know
+## Runs
 
 - A run cannot take parameters.
 - A script that needs settings reads them from environment variables or a file in the bundle.

@@ -93,7 +93,7 @@ write(joinpath("persistent", "results.json"), JSON3.write(results))
 Several instances can write to `persistent/` at once, so use SQLite or one file per writer instead of appending to a shared file.
 Keep secrets in environment variables, never in `persistent/`.
 
-The item's **Files** tab in the web UI shows the deployed bundle and `persistent/`, which confirms what was deployed and what the code wrote.
+The item's **Files** tab in the web UI lists the files in the deployed bundle and in `persistent/`.
 
 ## Serve rendered output as a static site
 
@@ -107,10 +107,10 @@ index = "index.html"
 ```
 
 `output_dir` is where the render writes, relative to the bundle, and `index` defaults to `index.html`.
-A Quarto entrypoint of `_quarto.yml` renders the whole project, which is how websites and books deploy.
+Set the entrypoint to `_quarto.yml` to render a whole Quarto project, such as a website or a book.
 
 Jupyter output is always served as a static site.
-A task with `[static]` and `[schedule]` republishes the site on every run, which is how a daily report stays current.
+A task with both `[static]` and `[schedule]` republishes the site on every run, so a daily report stays current.
 
 ## Scale and size
 

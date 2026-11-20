@@ -6,7 +6,7 @@ description: Use for questions about triggering an R, Python, or Julia script, a
 # Trigger Ricochet from other systems
 
 A task runs when someone presses **Run now**, on a cron schedule, or when code calls the invoke endpoint.
-Everything here builds on that endpoint, described in the `ricochet-rest-api` skill.
+The `ricochet-rest-api` skill describes that endpoint.
 
 For time-based runs, use the `ricochet-scheduling` skill instead.
 

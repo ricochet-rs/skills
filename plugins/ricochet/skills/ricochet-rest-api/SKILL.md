@@ -27,8 +27,6 @@ Another server can run a different version, so check its own docs before relying
 Never guess a path, field, or request body.
 If the docs do not list it, the server does not support it.
 
-This skill covers what the reference does not make obvious: how to authenticate, which scope a job needs, and the patterns that take several calls.
-
 ## Authenticate
 
 Send an API key in the `Authorization` header with the `Key` scheme, not `Bearer`:
@@ -50,7 +48,7 @@ Each key has scopes that limit what it can do:
 | `user.settings` | Changing the key owner's own account settings, such as which email Ricochet sends them |
 
 Every endpoint that reads content requires `content.read`.
-Polling a run is the one exception: `content.invoke` is also enough, so a key can follow the runs it starts.
+Polling a run also accepts `content.invoke`, so a key can follow the runs it starts.
 
 Give a key only the scopes its job needs, and an expiry.
 A key acts as the user who created it, so it can only reach content that user can reach.
@@ -58,7 +56,7 @@ A key acts as the user who created it, so it can only reach content that user ca
 Keys made by `ricochet login` expire after 8 hours and are not suitable for automation.
 Store the key as an environment variable or a CI secret, never in code.
 
-`GET /api/v0/check_key` returns the key's scopes, which is a quick way to test a key.
+`GET /api/v0/check_key` returns the key's scopes, so use it to test a key.
 
 ## Run a task and wait for it
 
@@ -81,7 +79,7 @@ curl "$RICOCHET_SERVER/api/v0/content/$ID/invocations/$RUN_ID" -H "Authorization
 `status` is `pending` while queued or running, then `success`, `failure`, or `cancelled`.
 `started` and `ended` are Unix seconds, and each is absent until the run starts or ends.
 
-Poll every few seconds, not in a tight loop.
+Poll every few seconds.
 A run cannot take parameters.
 
 R with httr2:
@@ -164,8 +162,7 @@ A task run's `id` is also its log ID, so `/api/v0/content/logs/$RUN_ID` streams 
 
 ## Common endpoints
 
-A map for orientation.
-Check the API docs for request bodies, responses, and anything not listed here.
+Check the API docs for request bodies, responses, and any endpoint not listed here.
 
 | Method and path | Does | Scope |
 | --- | --- | --- |

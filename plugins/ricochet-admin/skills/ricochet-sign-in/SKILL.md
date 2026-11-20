@@ -32,8 +32,8 @@ Register Ricochet with the provider as a web application:
 | `client_secret` | No | Leave it out to register Ricochet as a public client. |
 | `redirect_url` | No | Defaults to `url` plus `/oauth/callback` when `url` is set |
 | `display_name_claim` | No | Claim used as the user's name. Default `preferred_username`. |
-| `groups_claim` | No | Claim that lists the user's groups. Leave it out to skip group sync, or with `provider = "entra"`, where Ricochet reads groups from Microsoft Graph. |
-| `provider` | No | `"entra"` for Microsoft Entra ID, which reads groups and photos from Microsoft Graph at sign-in. Otherwise leave it out. |
+| `groups_claim` | No | Claim that lists the user's groups. Leave it out to skip group sync. With `provider = "entra"`, leave it out too, and Ricochet reads groups from Microsoft Graph. |
+| `provider` | No | `"entra"` for Microsoft Entra ID, so Ricochet reads groups and photos from Microsoft Graph at sign-in. Leave it out for other providers. |
 
 Ricochet identifies each user by the token's `sub` claim.
 Read [references/providers.md](references/providers.md) for Microsoft Entra ID, Auth0, Okta, Keycloak, and Google.
@@ -118,5 +118,5 @@ Roles are managed in Ricochet, not read from the identity provider.
 allow_avatar_upload = false
 ```
 
-Stops users uploading their own profile pictures.
+This stops users from uploading their own profile pictures.
 Ricochet sets only the cookies it needs for sign-in, sessions, sending each user to the same app instance, and the theme setting.

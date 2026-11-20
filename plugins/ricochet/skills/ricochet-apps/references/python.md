@@ -42,7 +42,8 @@ Use `python-app` for apps that keep a WebSocket open to each browser, such as Pa
 Ricochet runs `python <entrypoint>`, so the script must start the server on the host and port in `HOST` and `PORT`.
 Ricochet counts each open browser session as one connection, as it does for Shiny.
 
-Nothing runs `panel serve` for a Panel app, so make the entrypoint a small script that starts it on the app in `main.py`:
+Nothing runs `panel serve` for a Panel app.
+Keep the app in `main.py`, and make the entrypoint a script that runs `panel serve` on it:
 
 ```python
 import os, sys

@@ -55,7 +55,7 @@ Common causes:
 
 - Apps that run as scripts must listen on `PORT` and `0.0.0.0`, as the `ricochet-apps` skill lists.
 - Code that stops with an error before the server starts looks the same, so read the log for the error.
-- A missing environment variable is a common cause, so list names with `ricochet app env-vars get`.
+- A variable the code needs may be missing, so list the names with `ricochet app env-vars get`.
 - When a secret from a Vault or Azure Key Vault integration cannot be read, the loading page names the integration and the reason. This failure does not count toward the 5 retries, and the next visit tries again.
 - With `min_instances = 0`, the first request after an idle period waits for a cold start, and `min_instances = 1` keeps one instance warm.
 

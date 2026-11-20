@@ -10,15 +10,14 @@ An Enterprise license removes the Community Edition limits on one server.
 
 ## Community Edition
 
-Free for personal use and small teams.
-It includes deploying apps and tasks, sign-in with your identity provider, scheduling, and the CLI.
-It limits:
+The Community Edition is free for personal use and small teams.
+It includes deploying apps and tasks, sign-in through your identity provider, scheduling, and the CLI, with these limits:
 
-- **Access**: public content only, because private content needs a license.
-- **Developers**: 2 users with the Admin or Developer role, and any number of Consumers.
-- **Audit log**: not available.
-- **Git deployments**: 3 items deployed from Git.
-- **Connectivity**: the server checks its license online, so it needs internet access.
+- Content must be public. Private content needs a license.
+- At most 2 users can have the Admin or Developer role. Consumers are unlimited.
+- The audit log is not available.
+- At most 3 items can be deployed from Git.
+- The server checks its license online, so it needs internet access.
 
 ## Buy a license
 
@@ -36,7 +35,7 @@ key = "your-license-key"
 ```
 
 Restart Ricochet after adding it.
-Prefer the environment variable `RICOCHET_LICENSE__KEY` for the key.
+Set the key with the environment variable `RICOCHET_LICENSE__KEY` to keep it out of the file.
 
 An offline or air-gapped server uses a license file instead of a key:
 
@@ -49,13 +48,13 @@ A relative path resolves under `home`.
 
 ## When the license expires
 
-Over the last six weeks before expiry, admins see a banner above every page as a reminder to renew.
+For the last six weeks before the license expires, admins see a renewal reminder above every page.
 
-When the license expires, is suspended, or fails validation, the server keeps running as the Community Edition.
-Enterprise features stop at that moment and the Community Edition limits apply, and every signed-in user sees a notice that cannot be dismissed.
+If the license expires, is suspended, or fails validation, the server switches to the Community Edition at once.
+Enterprise features stop, the Community Edition limits apply, and every signed-in user sees a notice they cannot dismiss.
 
-A license that fails validation at startup does not stop the server either.
-Ricochet starts as the Community Edition, checks the license again every hour, and applies it once it validates.
+The same happens when the license fails validation at startup.
+Ricochet starts as the Community Edition, checks the license every hour, and applies it once it validates.
 
 ## Managed hosting
 

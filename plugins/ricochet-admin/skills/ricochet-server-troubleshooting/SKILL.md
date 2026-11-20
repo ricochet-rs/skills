@@ -30,12 +30,14 @@ Then check `/health` and `/ready` on port `6188`.
 
 ## Groups are missing
 
-- Set `groups_claim` or `groups_attribute`, and make the provider include groups in the token. Entra is the exception, below.
+- Set `groups_claim` or `groups_attribute`, and make the provider include groups in the token.
 - Users see group changes when they next sign in.
 - Group names in Ricochet must match the provider's values exactly, including case.
-- With Entra, set `provider = "entra"` and leave `groups_claim` out, so Ricochet reads group names from Microsoft Graph instead of the IDs in the token.
-- If the tenant blocks user consent, an administrator grants consent for the delegated `User.Read` permission.
 - The collaborators dialog lists a group only after one of its members has signed in.
+
+Entra works differently.
+Set `provider = "entra"` and leave `groups_claim` out, and Ricochet reads group names from Microsoft Graph, because the token holds only IDs.
+If the tenant blocks user consent, an administrator grants consent for the delegated `User.Read` permission.
 
 ## Every deployment fails while installing packages
 

@@ -229,7 +229,7 @@ ricochet task schedule <ID> "0 9 * * 1-5"
 
 - `task invoke` starts a run and prints its ID.
 - `--wait` waits for the run to finish and exits non-zero when it fails, so a task can be a CI step.
-- `--follow` does the same while streaming the run's output, which is the way to see why a run failed.
+- `--follow` also streams the run's output, so you can see why a run failed.
 - A run's ID is also its log ID, so `ricochet log <INVOCATION_ID> -n all` prints an earlier run's output.
 - `task invocation get` shows one run's status.
 - `task schedule` checks the cron expression and prints the next run time in UTC.
@@ -300,7 +300,7 @@ secrets = [
 ```
 
 - `integration` is the name on the **Integrations** page. A Vault secret takes a `path` relative to the KV mount and a `key`, and an Azure secret takes a `name`.
-- The first deploy reads these tables. After that, `ricochet app settings update` adds secrets and points existing variables at new ones, but never removes one, so remove a variable on the **Environment Variables** page.
+- The first deploy reads these tables. After that, `ricochet app settings update` adds secrets and points existing variables at new ones. It never removes one, so remove a variable on the **Environment Variables** page.
 - `ricochet app toml <ID>` lists every secret the item reads, including those added in the web UI.
 - Each variable name has one source, so it cannot be both set with `env-vars` and read from an integration.
 - When Ricochet cannot read a secret, the app does not start, and its loading page names the integration and the reason.

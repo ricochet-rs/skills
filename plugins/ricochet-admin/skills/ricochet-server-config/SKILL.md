@@ -23,7 +23,7 @@ RICOCHET_DATABASE__URL=postgres://ricochet:secret@db.example.com:5432/ricochet
 RICOCHET_NETWORK__PROXY_PORT=8080
 ```
 
-Use environment variables or a secret store for credentials rather than the file.
+Keep credentials in environment variables or a secret store, out of the file.
 
 ## Address and storage
 
@@ -96,7 +96,7 @@ secrets = "/etc/ricochet/secrets"
 ```
 
 Never run `ricochet secrets-init` for a server that already has data, because a new keypair cannot read the old values.
-A server that already stores encrypted values refuses to start without its keypair rather than creating a new one.
+A server that already stores encrypted values will not start without its keypair, and never creates a new one in its place.
 
 ## Deployment history
 
@@ -161,8 +161,8 @@ from = "ricochet <ricochet@example.com>"
 | `from` | The sender on every email |
 | `reply_to` | Where replies go. Defaults to `from`. |
 
-- Set the password with `RICOCHET_SMTP__PASSWORD` rather than in the file.
-- After a restart, open **Server Settings**, then **Email**, and select **Send me a test**, which goes to the admin's own address and shows the mail server's reason if it refuses.
+- Set the password with `RICOCHET_SMTP__PASSWORD` to keep it out of the file.
+- To check the settings, restart Ricochet, open **Server Settings**, then **Email**, and select **Send me a test**. The email goes to your own address, and if the mail server refuses it, the page shows the reason.
 - Ricochet retries a failed email four more times over half an hour.
 - Without `[smtp]`, the web UI hides every email setting.
 - Users choose which email they get in their profile and in each item's settings.
