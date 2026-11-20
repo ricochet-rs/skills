@@ -119,6 +119,6 @@ file_logging = false
 
 - Records are kept 365 days by default, or forever with `retention_days = "forever"`.
 - `file_logging = true` also writes them as JSON lines to `logs/audit/`, rotated daily.
-- Each record names the actor, the event, and whether an admin acted without a role on the item.
+- Each record has the actor, the event, and whether an admin acted without a role on the item.
 
 Reading and exporting the audit log needs an Enterprise license.

@@ -36,7 +36,7 @@ Then check `/health` and `/ready` on port `6188`.
 - The collaborators dialog lists a group only after one of its members has signed in.
 
 Entra works differently.
-Set `provider = "entra"` and leave `groups_claim` out, and Ricochet reads group names from Microsoft Graph, because the token holds only IDs.
+Set `provider = "entra"` and leave `groups_claim` out, and Ricochet reads group names from Microsoft Graph, because Entra puts only group IDs in the token.
 If the tenant blocks user consent, an administrator grants consent for the delegated `User.Read` permission.
 
 ## Every deployment fails while installing packages
@@ -45,7 +45,7 @@ If the tenant blocks user consent, an administrator grants consent for the deleg
 | --- | --- |
 | Rootless containers are not allowed on a host install | Run `sudo ricochet check-security` and fix what it reports, which is usually subordinate IDs or AppArmor. |
 | AppArmor blocks user namespaces on Ubuntu 23.10 and newer | Run `sudo ricochet setup-apparmor`, or for a container load the profile from the `ricochet-install` skill. |
-| The interpreter is missing | Install the R, Python, or Julia version the lockfile asks for, or add an image that includes it. |
+| The interpreter is missing | Install the R, Python, or Julia version recorded in the lockfile, or add an image with it. |
 | A system library is missing | Install the library on the host, or add it to the execution environment image. |
 | Installs time out | Raise `[restore] timeout`, or the item's own `restore_timeout`. |
 | A package repository is unreachable | Check the server can reach the repositories in `[repositories]` and in the lockfiles. |
@@ -62,7 +62,7 @@ If the tenant blocks user consent, an administrator grants consent for the deleg
 
 | Symptom | Fix |
 | --- | --- |
-| The log says `per-item memory limits are not enforced` | Run the container with `--user 0`, as the `ricochet-install` skill describes. |
+| `per-item memory limits are not enforced` appears in the log | Run the container with `--user 0`, as the `ricochet-install` skill describes. |
 | Items use too much memory by default | Set `[resources] default_memory_limit`. |
-| A Kubernetes task fails at once with `Kubernetes refused the pod` | A ResourceQuota or admission policy in the namespace refused it, and the message names the limit. Raise the quota, or lower the item's `[resources]`. |
+| A Kubernetes task fails at once with `Kubernetes refused the pod` | A ResourceQuota or admission policy in the namespace refused it, and the limit appears in the error message. Raise the quota, or lower the item's `[resources]`. |
 | Prometheus cannot reach `/metrics` | Set `metrics = "0.0.0.0:6189"` and open the port to the Prometheus host only. |

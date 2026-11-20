@@ -1,6 +1,6 @@
 # Install on Kubernetes
 
-The Helm chart runs the Ricochet server and gives it permission to start apps and tasks in its namespace.
+The Helm chart installs the Ricochet server with permission to start apps and tasks in its namespace.
 Each app runs as a Deployment and each task run as a Job.
 
 ## Prerequisites

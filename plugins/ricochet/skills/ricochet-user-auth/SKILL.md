@@ -6,7 +6,7 @@ description: Use for questions about authenticating users or finding out who is 
 # Identify the signed-in user
 
 Ricochet signs users in before they reach an app.
-It then adds an `X-Ricochet-User` header to every request, with a signed token that names the user.
+It then adds an `X-Ricochet-User` header to every request, with a signed token that identifies the user.
 
 The app verifies the token and reads the user from it.
 No login code, OAuth client, or password handling belongs in the app.
@@ -77,7 +77,7 @@ is_finance = "finance-analysts" in claims["groups"]
 is_admin = claims["role"] == "admin"
 ```
 
-`groups` lists what the sign-in provider sends, which can be opaque IDs rather than names.
+`groups` has the values the sign-in provider sends, which can be opaque IDs rather than names.
 Print the claims for a test user to find the exact values before hard-coding one.
 
 Use this to hide parts of an app.

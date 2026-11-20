@@ -110,7 +110,7 @@ index = "index.html"
 Set the entrypoint to `_quarto.yml` to render a whole Quarto project, such as a website or a book.
 
 Jupyter output is always served as a static site.
-A task with both `[static]` and `[schedule]` republishes the site on every run, so a daily report stays current.
+A task with both `[static]` and `[schedule]` republishes the site on every run, so a daily report is always up to date.
 
 ## Scale and size
 

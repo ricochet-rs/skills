@@ -34,7 +34,7 @@ Common causes:
 | Symptom | Fix |
 | --- | --- |
 | Out of sync in R | Run `renv::status()` locally, fix what it reports with `renv::snapshot()`, and redeploy. A different R version on the server alone is not a problem. |
-| A package is not found | The repository holding it is missing. Add it to `[repositories]`, as the `ricochet-package-repos` skill describes, or snapshot it from a repository the server can reach. |
+| A package is not found | Its repository is missing. Add it to `[repositories]`, as the `ricochet-package-repos` skill describes, or snapshot it from a repository the server can reach. |
 | A package fails to compile | It needs a system library the server lacks. Ask the Ricochet admin to install it, or use a binary repository. |
 | Python install fails | Check that `uv.lock` and `.python-version` are committed, that `uv lock --check` passes locally, and that the pinned version fits `requires-python`. |
 | Needs a different R, Python, or Julia version | The version comes from the lockfile (`renv.lock`, `.python-version`, or `Manifest.toml`), matched to the versions installed on the server. Change it locally, update the lockfile, and redeploy. |
@@ -56,7 +56,7 @@ Common causes:
 - Apps that run as scripts must listen on `PORT` and `0.0.0.0`, as the `ricochet-apps` skill lists.
 - Code that stops with an error before the server starts looks the same, so read the log for the error.
 - A variable the code needs may be missing, so list the names with `ricochet app env-vars get`.
-- When a secret from a Vault or Azure Key Vault integration cannot be read, the loading page names the integration and the reason. This failure does not count toward the 5 retries, and the next visit tries again.
+- When a secret from a Vault or Azure Key Vault integration cannot be read, the loading page shows the integration and the reason. This failure does not count toward the 5 retries, and the next visit tries again.
 - With `min_instances = 0`, the first request after an idle period waits for a cold start, and `min_instances = 1` keeps one instance warm.
 
 ## The app starts but pages break

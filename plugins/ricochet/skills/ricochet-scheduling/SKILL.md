@@ -102,7 +102,7 @@ Set it on the task's **Settings**, then **Email** tab, or from code with `PUT /a
 
 ## Runs
 
-- A run cannot take parameters.
+- You cannot pass parameters to a run.
 - A script that needs settings reads them from environment variables or a file in the bundle.
 - Stopping a run does not remove its schedule.
 - Run the task once with `ricochet task invoke <ID> --wait` to check it succeeds before relying on the schedule.

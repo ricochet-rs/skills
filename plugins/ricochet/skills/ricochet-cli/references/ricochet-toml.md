@@ -23,7 +23,7 @@ Some tables are rejected for the wrong kind of content.
 | `exclude` | list of globs | no | Matching files are left out, after `include` |
 | `exec_env` | string | no | Execution environment image, on servers that run content in containers |
 
-`.venv`, `.renv`, and `__pycache__` are always left out, even when `include` names them.
+`.venv`, `.renv`, and `__pycache__` are always left out, even when they match `include`.
 
 ## `[language]`
 
@@ -42,7 +42,7 @@ Tasks only.
 | Key | Notes |
 | --- | --- |
 | `cron` | A cron expression such as `0 9 * * 1-5`, or `@hourly`, `@daily`, `@weekly`, `@monthly`. Runs in UTC. |
-| `max_duration` | Seconds a run may take before Ricochet stops it. Replaces the server's limit, one hour by default, for this task. Works without `cron`. |
+| `max_duration` | How many seconds a run may last before Ricochet stops it. Replaces the server's limit, one hour by default, for this task. Works without `cron`. |
 
 The server reads `[schedule]` when it creates the item, and `ricochet task settings update` never sends it.
 Change `cron` later with `ricochet task schedule`, and `max_duration` in the task's settings in the web UI.
@@ -57,7 +57,7 @@ Once the table exists, the first four keys are required.
 | `min_instances` | integer | `0` | Instances kept running |
 | `max_instances` | integer | `5` | Most instances at once |
 | `spawn_threshold` | integer | `80` | Percentage of `max_connections` that starts another instance |
-| `max_connections` | integer | `10` | Connections one instance takes |
+| `max_connections` | integer | `10` | Connections one instance can serve |
 | `max_connection_age` | seconds | unset | How long an instance may live. Unset, it ends when its last connection closes. |
 | `inactive_timeout` | seconds | unset | Idle time before a connection is closed |
 | `connection_timeout` | seconds | unset | Time allowed to reach an instance |
@@ -120,17 +120,17 @@ These can only be stricter than the server's own policy.
 ## `[[integrations.vault]]` and `[[integrations.azure_key_vault]]`
 
 Secrets read from a HashiCorp Vault, OpenBao, or Azure Key Vault integration into environment variables.
-Each entry names an `integration` from the server's **Integrations** page and lists its `secrets`:
+In each entry, `integration` is a name from the server's **Integrations** page, and `secrets` are the secrets to read:
 
 | Field | Notes |
 | --- | --- |
 | `path`, `key` | Vault only. The secret's path relative to the KV mount, such as `myapp/db`, and the field inside it. |
 | `name` | Azure Key Vault only. The secret's name. |
-| `env_var` | The environment variable that receives the value |
+| `env_var` | The environment variable Ricochet sets to the value |
 
 The first deploy reads these.
 Later, `ricochet app settings update` adds secrets and repoints variables, but never removes one.
-The file holds only where each secret is, never its value.
+The file has only the location of each secret, never its value.
 
 ## `[env_vars]`
 

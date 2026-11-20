@@ -57,9 +57,9 @@ Ricochet runs each app and task in its own rootless container, which needs more 
 | `--cap-drop=ALL` | Drops every default capability before adding back only these |
 | `SYS_ADMIN`, `SETUID`, `SETGID`, `DAC_OVERRIDE` | Create user namespaces and set mount ownership for content containers |
 | `seccomp=unconfined`, `systempaths=unconfined` | Permit the namespace and `/proc` mounts content containers need |
-| `--user 0` | Lets Ricochet enforce each item's memory limit. Ricochet still runs as its own non-root user. |
+| `--user 0` | Needed for Ricochet to enforce each item's memory limit. Ricochet still runs as its own non-root user. |
 
-`--privileged` also works but gives the container full access to the host, so avoid it.
+`--privileged` also works, but avoid it, because a privileged container has full access to the host.
 Without `--user 0`, items run without a memory limit and the server logs `per-item memory limits are not enforced`.
 Cap the whole container with `--memory` in that case.
 
