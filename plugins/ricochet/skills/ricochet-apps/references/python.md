@@ -40,8 +40,30 @@ For `python-service`, start any Python web server the same way, for example `uvi
 
 Use `python-app` for apps that keep a WebSocket open to each browser, such as Panel.
 Ricochet runs `python <entrypoint>`, so the script must start the server on the host and port in `HOST` and `PORT`.
-Nothing runs `panel serve` for it, so a Panel script that only marks objects `.servable()` starts no server; call `pn.serve(..., address=..., port=..., show=False)` instead.
 Ricochet counts each open browser session as one connection, as it does for Shiny.
+
+Nothing runs `panel serve` for a Panel app, so make the entrypoint a small script that starts it on the app in `main.py`:
+
+```python
+import os, sys
+from pathlib import Path
+
+content_id = os.getenv("RICOCHET_CONTENT_ID")
+args = [
+    sys.executable, "-m", "panel", "serve", str(Path(__file__).with_name("main.py")),
+    "--index", "main",
+    "--address", os.getenv("HOST", "127.0.0.1"),
+    "--port", os.getenv("PORT", "5006"),
+    "--allow-websocket-origin", "*",
+]
+if content_id:
+    args += ["--root-path", f"/app/{content_id}"]
+os.execv(sys.executable, args)
+```
+
+- `--allow-websocket-origin "*"` lets browsers connect through Ricochet's proxy.
+- `--root-path` gives Panel the `/app/<content-id>` prefix for the links it builds.
+- `main.py` marks the page `.servable()`, which on its own starts no server.
 
 ## Tasks (`python`, `quarto-py`, `jupyter`)
 
