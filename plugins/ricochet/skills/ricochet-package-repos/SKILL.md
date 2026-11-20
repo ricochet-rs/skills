@@ -60,7 +60,7 @@ Packages install from the sources recorded in `Manifest.toml`.
 ## When the server sets repositories
 
 A Ricochet admin can set repositories for the whole server.
-Then the item's `[repositories]` table is merged with the server's, and the item wins where both name the same repository.
+Then the item's `[repositories]` table is merged with the server's, and Ricochet uses the item's repository where both have one with the same name.
 
 When the admin turns item overrides off, the server's repositories always apply and the item's table is ignored.
 If a deploy keeps installing from an unexpected repository, ask the admin how the server is configured.

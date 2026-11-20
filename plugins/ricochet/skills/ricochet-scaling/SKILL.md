@@ -27,7 +27,7 @@ All four keys are required once the table exists.
 | --- | --- |
 | `min_instances` | Instances always kept running. `0` stops every instance when the app is idle. |
 | `max_instances` | The most instances that run at once. |
-| `max_connections` | Connections one instance takes. |
+| `max_connections` | The number of connections one instance can serve. |
 | `spawn_threshold` | Percentage of `max_connections` at which a new instance starts. |
 
 With these values, a new instance starts once an instance has 8 connections, up to 5 instances.
@@ -40,17 +40,17 @@ Other apps count one per request in progress.
 
 | Situation | Settings |
 | --- | --- |
-| The first visit after a quiet period is slow | `min_instances = 1` keeps one instance running, so nobody waits for a cold start. |
+| The first visit after a quiet period is slow | With `min_instances = 1`, one instance is always running, so nobody waits for a cold start. |
 | A Shiny app does heavy work per session | Lower `max_connections`, such as `3` to `5`, so sessions spread across instances sooner. |
-| A light API answers quickly | Raise `max_connections`, such as `50`, because each request holds a connection only briefly. |
+| A light API answers quickly | Raise `max_connections`, such as `50`, because each request uses a connection only briefly. |
 | Traffic comes in bursts | Lower `spawn_threshold`, such as `50`, so new instances start before existing ones fill up. |
-| The app holds state in memory per instance | Keep `max_instances = 1`, or move the state to a database under `persistent/`. |
+| The app stores state in each instance's memory | Keep `max_instances = 1`, or move the state to a database under `persistent/`. |
 
 Every running instance uses memory, so raise `min_instances` and `max_instances` only as far as the traffic needs.
 
 ## Connections that drop or linger
 
-These optional keys take seconds:
+These optional keys are in seconds:
 
 | Key | Meaning |
 | --- | --- |
@@ -72,4 +72,4 @@ inactive_timeout = 3600
 Ricochet reads `[serve]` on the first deploy.
 After that, edit the table and run `ricochet app settings update`, or change the values on the app's scaling page in the web UI.
 
-Run `ricochet app instances` to see how many instances are running and how many connections each holds.
+Run `ricochet app instances` to see how many instances are running and how many connections each has open.

@@ -13,7 +13,7 @@ Elsewhere, pass the path with `ricochet start --config <path>`.
 
 ## Environment variables
 
-Every key can be set as an environment variable, which wins over the file.
+Every key can also be set as an environment variable, and Ricochet uses the environment variable when both are set.
 Prefix it with `RICOCHET_`, and join nested keys with `__`:
 
 ```sh
@@ -82,7 +82,7 @@ Two Ricochet processes can share one SQLite file only on the same machine.
 4. Add `[database] url` to the config and start Ricochet.
 
 Keep the same `home` and encryption keys, because only they can read the stored environment variables and Git credentials.
-Users sign in again, and the SQLite file stays as a backup.
+Users sign in again, and Ricochet leaves the SQLite file in place as a backup.
 The copy also works from Postgres to a new SQLite file.
 
 ## Encryption keys
@@ -137,12 +137,12 @@ max_duration = 21600
 ```
 
 Ricochet stops a task run after `max_duration` seconds, `3600` by default, and marks it cancelled.
-The limit covers scheduled and manual runs on every backend, and a task's own `[schedule] max_duration` replaces it.
+The limit applies to scheduled and manual runs on every backend, and Ricochet uses a task's own `[schedule] max_duration` instead when it is set.
 
 ## Email
 
 Ricochet emails editors when it cannot deploy or run their item, and can email everyone who can open a task after a successful run.
-It sends nothing until `[smtp]` names a mail server:
+It sends nothing until you add a mail server in `[smtp]`:
 
 ```toml
 [smtp]
@@ -179,7 +179,7 @@ python = ["https://pypi.internal.example.com/simple", "https://pypi.org/simple"]
 | Server `[repositories]` | `allow_overrides` | Result |
 | --- | --- | --- |
 | Not set | | Each lockfile's own repositories, and items may set their own |
-| Set | `true`, the default | Server and item repositories merged, and the item wins on a name conflict |
+| Set | `true`, the default | Server and item repositories merged, and the item's repository used when both have the same name |
 | Set | `false` | Server repositories for every item, and item settings ignored |
 
 R repository names are uppercase letters and underscores.

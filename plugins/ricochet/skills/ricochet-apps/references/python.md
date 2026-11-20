@@ -62,8 +62,8 @@ if content_id:
 os.execv(sys.executable, args)
 ```
 
-- `--allow-websocket-origin "*"` lets browsers connect through Ricochet's proxy.
-- `--root-path` gives Panel the `/app/<content-id>` prefix for the links it builds.
+- With `--allow-websocket-origin "*"`, browsers can connect through Ricochet's proxy.
+- With `--root-path`, Panel adds the `/app/<content-id>` prefix to the links it builds.
 - `main.py` marks the page `.servable()`, which on its own starts no server.
 
 ## Tasks (`python`, `quarto-py`, `jupyter`)

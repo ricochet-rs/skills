@@ -7,7 +7,7 @@ description: Use for questions about how users sign in to a self-hosted Ricochet
 
 Ricochet signs users in through your identity provider with OIDC or Security Assertion Markup Language (SAML), and never stores passwords.
 Configure exactly one of `[auth.oidc]` or `[auth.saml]` in `ricochet-config.toml`, then restart Ricochet.
-A server with neither lets nobody sign in.
+Without either, nobody can sign in.
 
 ## OIDC
 
@@ -55,7 +55,7 @@ groups_attribute = "groups"
 - `acs_url` must be HTTPS and end in `/saml/acs`.
 - `idp_metadata_xml` is the provider's metadata XML itself, up to 32 KiB, pasted in rather than linked.
 - Give the provider Ricochet's metadata from `https://<your Ricochet address>/saml/metadata`.
-- The three `*_attribute` keys name the assertion attributes that hold each value.
+- Set the three `*_attribute` keys to the names of the assertion attributes with the email, display name, and groups.
 
 ## Groups
 
@@ -85,7 +85,7 @@ This sends every visitor to the sign-in page first.
 | Developer | Deploy content and manage their own items |
 | Consumer | Open content shared with them |
 
-New users get the Developer role unless `default_role` says otherwise:
+New users get the Developer role unless you set `default_role`:
 
 ```toml
 [auth]
@@ -105,7 +105,7 @@ ricochet user --config /var/lib/ricochet/ricochet-config.toml delete <USER_ID>
 
 Put `--config` before the subcommand.
 
-- `user list` takes `--role` to filter and `--format csv` or `--format json`.
+- Filter `user list` with `--role`, and choose its output with `--format csv` or `--format json`.
 - A locked user cannot sign in, deploy, or use their API keys.
 - `user delete` refuses a user who owns items, unless `--content delete` removes their items too.
 

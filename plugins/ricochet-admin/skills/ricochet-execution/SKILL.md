@@ -18,7 +18,7 @@ The Helm chart sets up the Kubernetes option itself, as the `ricochet-install` s
 ## Execution environments
 
 The container and Kubernetes options run content in images listed in an execution environment file.
-Each entry names an image and the interpreter versions inside it:
+Each entry is one image, with the interpreter versions inside it:
 
 ```toml
 [image.r-default]
@@ -37,7 +37,7 @@ python = [{ version = "3.13", bin = "/usr/local/bin/python3" }]
 ```
 
 - `r`, `python`, and `julia` list each interpreter's version and path, and Ricochet matches each item's lockfile to them.
-- An item names an image with `exec_env` in its `_ricochet.toml`, and otherwise gets `default_image`.
+- To choose an image for an item, set `exec_env` in its `_ricochet.toml`. Otherwise Ricochet uses `default_image`.
 - An `exec_env` value that matches no entry is used as a full image reference.
 - The `ricochet-rs/exec-envs` images on GitHub are rebuilt weekly and suit most servers.
 - Build your own images from them to add system libraries or other versions.
@@ -83,7 +83,7 @@ image_pull_policy = "IfNotPresent"
 | `namespace` | Namespace for app and task pods |
 | `pvc_content_name`, `pvc_cache_name` | Persistent volume claims for bundles and package caches |
 | `image_pull_policy` | `Always`, `IfNotPresent`, or `Never` |
-| `instance_name` | A stable name that keeps several Ricochet servers in one namespace apart |
+| `instance_name` | A stable name for each Ricochet server, so several servers can share one namespace |
 | `allow_custom_deployment_config` | Lets content owners extend their app's Deployment specification. Off by default. |
 | `leader_election` | `"lease"` when more than one Ricochet replica runs |
 | `restore_priority_class_name`, `validation_priority_class_name` | Priority classes for package install jobs and image checks |

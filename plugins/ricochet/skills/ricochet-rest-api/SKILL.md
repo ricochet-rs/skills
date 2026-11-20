@@ -19,7 +19,7 @@ https://<server>/api/docs
 ```
 
 It lists every endpoint, request body, response, status code, and required scope for that server's version, and needs no sign-in.
-The page embeds the full OpenAPI specification in its HTML, so fetching it gives the complete reference.
+The full OpenAPI specification is in the page's HTML, so fetch the page to get the complete reference.
 
 When no server is known yet, use [try.ricochet.rs/api/docs](https://try.ricochet.rs/api/docs).
 Another server can run a different version, so check its own docs before relying on an endpoint.
@@ -48,7 +48,7 @@ Each key has scopes that limit what it can do:
 | `user.settings` | Changing the key owner's own account settings, such as which email Ricochet sends them |
 
 Every endpoint that reads content requires `content.read`.
-Polling a run also accepts `content.invoke`, so a key can follow the runs it starts.
+A key with `content.invoke` can also poll a run, so it can follow the runs it starts.
 
 Give a key only the scopes its job needs, and an expiry.
 A key acts as the user who created it, so it can only reach content that user can reach.
@@ -64,7 +64,7 @@ Store the key as an environment variable or a CI secret, never in code.
 curl -X POST "$RICOCHET_SERVER/api/v0/content/$ID/invoke" -H "Authorization: Key $RICOCHET_API_KEY"
 ```
 
-The request takes no body and returns the run's ID at once:
+Send the request without a body. The response has the run's ID:
 
 ```json
 {"id": "01J...", "content_id": "01H..."}
@@ -80,7 +80,7 @@ curl "$RICOCHET_SERVER/api/v0/content/$ID/invocations/$RUN_ID" -H "Authorization
 `started` and `ended` are Unix seconds, and each is absent until the run starts or ends.
 
 Poll every few seconds.
-A run cannot take parameters.
+You cannot pass parameters to a run.
 
 R with httr2:
 
@@ -154,7 +154,7 @@ curl -N "$RICOCHET_SERVER/api/v0/content/logs/$LOG_ID" -H "Authorization: Key $R
 
 The first returns `{"log_ids": [...]}`, with one log for each architecture the install runs on.
 The second returns plain text.
-While the install is still running, it stays open and sends each new line, then closes when the install ends.
+While the install runs, the server keeps the response open and sends each new line, then closes it when the install ends.
 
 A deployment that never started has no logs and returns `410`.
 

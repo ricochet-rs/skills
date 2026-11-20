@@ -15,7 +15,7 @@ redirect_url = "https://ricochet.example.com/oauth/callback"
 
 - Use the v2.0 issuer, because the v1 issuer, `https://sts.windows.net/<tenant-id>/`, does not work.
 - At every sign-in, Ricochet reads the user's groups, including nested groups, and their photo from Microsoft Graph with the user's own token.
-- Leave `groups_claim` out. Setting it makes Ricochet read the token's claim instead, which holds group IDs and drops every group for users in more than about 200.
+- Leave `groups_claim` out. Setting it makes Ricochet read the token's claim instead. Entra puts only group IDs in that claim, and leaves it empty for users in more than about 200 groups.
 - Ricochet needs only the delegated `User.Read` permission, which every new app registration already lists. If the tenant blocks user consent, an administrator grants consent for it once.
 - `Group.Read.All`, `User.Read.All`, or `Directory.Read.All` granted for an earlier Ricochet version can be removed.
 - The collaborators dialog lists a group by name once one of its members has signed in.

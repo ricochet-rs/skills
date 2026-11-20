@@ -26,8 +26,8 @@ memory_limit = "2Gi"
 | `memory_limit` | The most memory the item may use. A process that goes over is stopped. |
 | `restore_timeout` | Seconds allowed for installing packages during a deploy. The default is `1800`, and `0` removes the limit. |
 
-CPU takes thousandths of a core, such as `"500m"` for half a core, or whole cores, such as `"2"`.
-Memory takes a `Ki`, `Mi`, or `Gi` suffix, such as `"512Mi"` or `"4Gi"`.
+Give CPU in thousandths of a core, such as `"500m"` for half a core, or in whole cores, such as `"2"`.
+Give memory with a `Ki`, `Mi`, or `Gi` suffix, such as `"512Mi"` or `"4Gi"`.
 
 Both are strings, so keep the quotes.
 
@@ -39,7 +39,7 @@ An app with `memory_limit = "2Gi"` and 3 running instances can use up to 6 GiB i
 | Symptom | Change |
 | --- | --- |
 | The app or task stops and its log reports it ran out of memory | Raise `memory_limit` past the peak the code needs. Load less data at once if the peak keeps growing. |
-| A task takes much longer on Ricochet than locally | Raise `cpu_limit`, especially for code that runs in parallel. |
+| A task runs much longer on Ricochet than locally | Raise `cpu_limit`, especially for code that runs in parallel. |
 | An app is slow under load | Add instances with the `ricochet-scaling` skill before raising `cpu_limit`. |
 | A deploy fails while packages are still installing | Raise `restore_timeout`, for example to `3600`, for projects that compile many packages from source. |
 
@@ -65,5 +65,5 @@ Ricochet reads it only on the first deploy, so change it later in the task's set
 
 Ricochet reads `[resources]` on the first deploy.
 After that, edit the table and run `ricochet app settings update` or `ricochet task settings update`.
-These send the CPU and memory keys only, so `restore_timeout` keeps its first-deploy value.
+These commands send only the CPU and memory keys, so `restore_timeout` does not change after the first deploy.
 On Kubernetes, the change is applied to the running app without a redeploy.

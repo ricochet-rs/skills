@@ -80,7 +80,7 @@ Choose the content type with these rules:
 `slug` sets the address, `https://<server>/app/<slug>`, using letters, digits, `-`, and `_`.
 The server derives one from `name` when it is absent.
 
-`access_type` takes one of three values:
+`access_type` is one of three values:
 
 - `private`: the owner and the collaborators they add
 - `internal`: every signed-in user of the server
@@ -127,14 +127,14 @@ ricochet login -S https://ricochet.example.com -k rico_...
 
 - On the user's own machine, run `ricochet login -S <profile>` yourself, which opens their browser, waits up to 5 minutes for approval, and stores the key.
 - Over SSH, in a dev container, or in a remote editor, pass `--no-browser`, which prints the server's `/credentials` page and reads the key from a prompt or stdin.
-- `-k` takes a key directly.
+- Pass a key directly with `-k`.
 
 Keys from `ricochet login` expire after 8 hours, so expect to sign in again in a new session.
 For automation, create a key in the web UI and set `RICOCHET_API_KEY`.
 
 The CLI chooses the server in this order:
 
-1. `RICOCHET_SERVER`, which wins over `-S`
+1. `RICOCHET_SERVER`, used even when `-S` is given
 2. `-S` or `--server`, matched to a profile name, then to a configured address
 3. The default profile
 
@@ -211,7 +211,7 @@ ricochet app deployment get <DEPLOYMENT_ID>
 `ricochet app stop` without an instance stops every instance of the item.
 `ricochet app toml` shows the item's settings as the server has them.
 
-Delete an app or task with `ricochet delete <ID>`, which asks first unless `-f` is given.
+Delete an app or task with `ricochet delete <ID>` and confirm at the prompt, or pass `-f` to skip it.
 Deleting cannot be undone, so confirm the ID with the user.
 
 ## Manage tasks
@@ -299,11 +299,11 @@ secrets = [
 ]
 ```
 
-- `integration` is the name on the **Integrations** page. A Vault secret takes a `path` relative to the KV mount and a `key`, and an Azure secret takes a `name`.
+- `integration` is the name on the **Integrations** page. For a Vault secret, give a `path` relative to the KV mount and a `key`. For an Azure secret, give a `name`.
 - The first deploy reads these tables. After that, `ricochet app settings update` adds secrets and points existing variables at new ones. It never removes one, so remove a variable on the **Environment Variables** page.
 - `ricochet app toml <ID>` lists every secret the item reads, including those added in the web UI.
 - Each variable name has one source, so it cannot be both set with `env-vars` and read from an integration.
-- When Ricochet cannot read a secret, the app does not start, and its loading page names the integration and the reason.
+- When Ricochet cannot read a secret, the app does not start, and its loading page shows the integration and the reason.
 
 ## Errors
 

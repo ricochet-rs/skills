@@ -33,7 +33,7 @@ Use `dnf install` for upgrades and downgrades too, not `dnf upgrade`.
 ## Configure and start
 
 The packages install the `ricochet` binary, a `ricochet-server` systemd service, and an AppArmor profile.
-The service reads `/var/lib/ricochet/ricochet-config.toml` and keeps its data in `/var/lib/ricochet/data`.
+The service reads `/var/lib/ricochet/ricochet-config.toml` and stores its data in `/var/lib/ricochet/data`.
 
 ```toml
 url = "https://ricochet.example.com"
@@ -88,7 +88,7 @@ ricochet start --config /etc/ricochet/ricochet-config.toml --daemon
 ricochet stop --config /etc/ricochet/ricochet-config.toml
 ```
 
-`--daemon` keeps it running after the terminal closes and writes `ricochet.pid`, `ricochet.stdout`, and `ricochet.err` to `home`.
+With `--daemon`, Ricochet keeps running after the terminal closes and writes `ricochet.pid`, `ricochet.stdout`, and `ricochet.err` to `home`.
 Pass `ricochet stop` the same `--config`.
 
 ## macOS
@@ -158,4 +158,4 @@ sudo systemctl disable --now ricochet-server
 sudo apt purge ricochet-server   # or: sudo dnf remove ricochet-server
 ```
 
-The config file at `/var/lib/ricochet/ricochet-config.toml` stays behind.
+Removing the package leaves the config file at `/var/lib/ricochet/ricochet-config.toml` in place.

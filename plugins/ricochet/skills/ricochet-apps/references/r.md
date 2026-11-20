@@ -8,7 +8,7 @@ Packages the app loads only at startup, such as `pkgload`, must be in the lockfi
 
 ## Shiny (`shiny`)
 
-The entrypoint is `app.R`, or a directory holding `ui.R` and `server.R`.
+The entrypoint is `app.R`, or a directory with `ui.R` and `server.R`.
 Ricochet starts the app and passes the port, so never call `runApp()` with a port.
 
 ```toml
