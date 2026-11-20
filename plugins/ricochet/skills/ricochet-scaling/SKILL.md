@@ -33,7 +33,7 @@ All four keys are required once the table exists.
 With these values, a new instance starts once an instance has 8 connections, up to 5 instances.
 Once `max_instances` are running, new connections go to the instance with the fewest.
 
-A Shiny or Genie app counts one connection per open browser session.
+A Shiny, Genie, or `python-app` app counts one connection per open browser session.
 Other apps count one per request in progress.
 
 ## Choose values

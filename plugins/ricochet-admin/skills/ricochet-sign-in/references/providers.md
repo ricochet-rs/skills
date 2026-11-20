@@ -11,16 +11,15 @@ issuer_url = "https://login.microsoftonline.com/<tenant-id>/v2.0"
 client_id = "your-client-id"
 client_secret = "your-client-secret"
 redirect_url = "https://ricochet.example.com/oauth/callback"
-sync_interval = 60
 ```
 
 - Use the v2.0 issuer, because the v1 issuer, `https://sts.windows.net/<tenant-id>/`, does not work.
-- Turn on the groups claim in the app registration under **Token configuration**, then **Add groups claim**.
-- Entra sends group IDs for groups created in Entra, and with `provider = "entra"` Ricochet looks up their names.
-- Looking up group names and background sync need the `Group.Read.All` application permission with admin consent, and `client_secret`.
-- User photos need the `User.Read.All` application permission, and a missing photo or permission never blocks sign-in.
-- A user in more than about 200 groups gets no groups in the token, so they appear to have none.
-- `sync_interval` refreshes groups every that many minutes without waiting for users to sign in again.
+- At every sign-in, Ricochet reads the user's groups, including nested groups, and their photo from Microsoft Graph with the user's own token.
+- Leave `groups_claim` out. Setting it makes Ricochet read the token's claim instead, which holds group IDs and drops every group for users in more than about 200.
+- Ricochet needs only the delegated `User.Read` permission, which every new app registration already lists. If the tenant blocks user consent, an administrator grants consent for it once.
+- `Group.Read.All`, `User.Read.All`, or `Directory.Read.All` granted for an earlier Ricochet version can be removed.
+- The collaborators dialog lists a group by name once one of its members has signed in.
+- A missing photo never blocks sign-in.
 
 ## Auth0
 

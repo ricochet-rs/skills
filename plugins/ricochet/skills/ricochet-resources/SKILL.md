@@ -1,6 +1,6 @@
 ---
 name: ricochet-resources
-description: Use for questions about how much CPU or memory a deployed app, script, report, or notebook gets, such as an app or task running out of memory, giving a script more CPU, setting memory or CPU limits and requests, or a package install that times out during a deploy, for R, Python, and Julia apps and tasks.
+description: Use for questions about how much CPU or memory a deployed app, script, report, or notebook gets, such as an app or task running out of memory, giving a script more CPU, setting memory or CPU limits and requests, a task run stopped when it passes its time limit, or a package install that times out during a deploy, for R, Python, and Julia apps and tasks.
 ---
 
 # Set processor and memory limits
@@ -46,7 +46,24 @@ An app with `memory_limit = "2Gi"` and 3 running instances can use up to 6 GiB i
 Measure first where possible.
 The **Processes** page in the web UI shows each running instance and task with its memory, peak memory, and CPU.
 
+## Long-running tasks
+
+Ricochet stops a task run that passes the server's time limit, one hour by default.
+The run is marked cancelled, and its log ends with the limit it reached.
+
+Give one task more time with `max_duration` in seconds under `[schedule]`, which works without `cron`:
+
+```toml
+[schedule]
+max_duration = 21600
+```
+
+It replaces the server's limit for that task, and applies to scheduled runs and runs started by hand alike.
+Ricochet reads it only on the first deploy, so change it later in the task's settings in the web UI, where it is entered in minutes.
+
 ## Apply changes
 
 Ricochet reads `[resources]` on the first deploy.
 After that, edit the table and run `ricochet app settings update` or `ricochet task settings update`.
+These send the CPU and memory keys only, so `restore_timeout` keeps its first-deploy value.
+On Kubernetes, the change is applied to the running app without a redeploy.

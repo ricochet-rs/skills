@@ -1,6 +1,6 @@
 ---
 name: ricochet-rest-api
-description: Use when calling the Ricochet REST API from code or curl, including finding an endpoint in the API docs, creating an API key, running a task and waiting for it to finish, reading deployments and their logs, changing a schedule or settings, and listing content, from R, Python, Julia, shell, or CI.
+description: Use when calling the Ricochet REST API from code or curl, including finding an endpoint in the API docs, creating an API key, running a task and waiting for it to finish, reading deployments and their logs, changing a schedule or settings, listing content, and connecting an AI assistant to the MCP server, from R, Python, Julia, shell, or CI.
 ---
 
 # Call Ricochet from code
@@ -47,6 +47,10 @@ Each key has scopes that limit what it can do:
 | `content.publish` | Deploying |
 | `content.settings` | Changing settings, schedules, and environment variables |
 | `content.delete` | Deleting content |
+| `user.settings` | Changing the key owner's own account settings, such as which email Ricochet sends them |
+
+Every endpoint that reads content requires `content.read`.
+Polling a run is the one exception: `content.invoke` is also enough, so a key can follow the runs it starts.
 
 Give a key only the scopes its job needs, and an expiry.
 A key acts as the user who created it, so it can only reach content that user can reach.
@@ -138,9 +142,12 @@ while status == "pending"
 end
 ```
 
-## Read a deployment's install log
+## Follow a deployment
 
-List the deployment's logs, then stream one:
+`GET /api/v0/content/deployments/$DEPLOYMENT_ID` returns one deployment.
+Its `restore_state` is `queued`, `restoring`, or `cancelling` while packages install, and `null` once the install is over.
+
+To read the install log, list the deployment's logs, then stream one:
 
 ```sh
 curl "$RICOCHET_SERVER/api/v0/content/deployments/$DEPLOYMENT_ID/logs" -H "Authorization: Key $RICOCHET_API_KEY"
@@ -152,6 +159,8 @@ The second returns plain text.
 While the install is still running, it stays open and sends each new line, then closes when the install ends.
 
 A deployment that never started has no logs and returns `410`.
+
+A task run's `id` is also its log ID, so `/api/v0/content/logs/$RUN_ID` streams the run's output, live while it runs.
 
 ## Common endpoints
 
@@ -176,6 +185,22 @@ Setting environment variables through the API requires encrypting each name and 
 Use `ricochet app env-vars set` or `ricochet task env-vars set` instead, which encrypt for you.
 
 When code must do it, follow the encryption steps on the Environment Variables page of the Ricochet docs.
+
+## Connect an AI assistant
+
+`https://<server>/api/v0/mcp` is a Model Context Protocol (MCP) server.
+An assistant connected to it can list the items its user can access, their deployments and restore log IDs, an app's running instances, and an item's `_ricochet.toml`.
+
+Add it to the client as a remote HTTP MCP server and sign in with OAuth.
+The user approves the sign-in in their browser, and the assistant then sees only what that user can see.
+For example, in Claude Code:
+
+```sh
+claude mcp add --transport http ricochet https://ricochet.example.com/api/v0/mcp
+```
+
+Then the user runs `/mcp`, selects **ricochet**, and selects **Authenticate**.
+A client that cannot sign in through a browser sends an API key with `content.read` in the `Authorization: Key` header instead.
 
 ## Errors
 

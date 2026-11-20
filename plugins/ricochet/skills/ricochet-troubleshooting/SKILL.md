@@ -10,13 +10,15 @@ For CLI error messages, see the error table in the `ricochet-cli` skill.
 
 ## Read the logs
 
-| Stage | Where |
+| Stage | Read it with |
 | --- | --- |
-| Package install during a deploy | `ricochet deploy --follow` streams it. For an earlier deployment, open its page in the web UI. |
-| App startup and runtime output | The app's **Logs** page in the web UI |
-| A task run's output | The run on the task's page in the web UI |
+| Package install during a deploy | `ricochet deploy --follow` streams it. For an earlier deployment, `ricochet log --deployment <DEPLOYMENT_ID> -n all`. |
+| A task run's output | `ricochet task invoke <ID> --follow` runs the task and streams its output. For an earlier run, `ricochet log <INVOCATION_ID> -n all`, because a run's ID is also its log ID. |
+| App startup and runtime output | The app's **Logs** tab in the web UI. No CLI command finds these logs, so ask the user to open the tab, or to give you a log ID for `ricochet log <LOG_ID>`. |
 
-`ricochet app deployment list <ID>` and `ricochet task deployment list <ID>` show each deployment's status.
+`ricochet app deployment list <ID>` and `ricochet task deployment list <ID>` show each deployment's ID and status.
+`ricochet log` needs CLI 1.5.0 or newer, so run `ricochet self update` when the command is missing.
+`-n all` prints every line instead of keeping only the latest on screen.
 Logs show times in the time zone set on the user's profile page, while cron schedules always use UTC.
 
 ## The deploy fails
@@ -42,10 +44,19 @@ Common causes:
 ## The app does not start
 
 An app that never opens its port is retried 5 times, then marked failed, and the visitor sees an error page.
+Ricochet does not try again until the next deploy, so fix the cause and redeploy.
+
+Ask the user to open the app's address, because people who can read its logs see the cause there:
+
+- The loading page streams the starting instance's log, and on Kubernetes also each startup stage and the pod's events.
+- The error page shows the last lines of the failed instance's log and links to the full log.
+
+Common causes:
 
 - Apps that run as scripts must listen on `PORT` and `0.0.0.0`, as the `ricochet-apps` skill lists.
-- Code that stops with an error before the server starts looks the same, so read the app's logs for the error.
+- Code that stops with an error before the server starts looks the same, so read the log for the error.
 - A missing environment variable is a common cause, so list names with `ricochet app env-vars get`.
+- When a secret from a Vault or Azure Key Vault integration cannot be read, the loading page names the integration and the reason. This failure does not count toward the 5 retries, and the next visit tries again.
 - With `min_instances = 0`, the first request after an idle period waits for a cold start, and `min_instances = 1` keeps one instance warm.
 
 ## The app starts but pages break
@@ -57,7 +68,7 @@ An app that never opens its port is retried 5 times, then marked failed, and the
 
 ## A task run fails
 
-- Run it again with `ricochet task invoke <ID> --wait` and read its output on the task's page.
+- Run it again with `ricochet task invoke <ID> --follow` and read the output it streams.
 - A run that works locally but fails on Ricochet usually depends on a file that was not deployed, a local path, or a variable set only locally.
 - Check what was bundled with `ricochet deploy --dry-run`.
 - A scheduled run that seems to happen at the wrong time is running in UTC, as the `ricochet-scheduling` skill explains.

@@ -115,7 +115,8 @@ The CLI reads the server and key from the environment, so a CI step needs no log
 
 `--wait` exits non-zero when the run fails, which fails the CI job.
 
-To redeploy on every push, run `ricochet deploy . --follow` in the same way, with a key that has `content.publish`.
+To redeploy on every push, run `ricochet deploy . --follow` in the same way.
+Its key needs `content.publish` to deploy and `content.read`, because `--follow` reads the install log.
 The committed `_ricochet.toml` must include the item's `id`, or each run creates a new item.
 
 ## Chain tasks

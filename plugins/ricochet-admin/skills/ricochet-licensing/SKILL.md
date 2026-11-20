@@ -47,6 +47,16 @@ file = "/etc/ricochet/license"
 
 A relative path resolves under `home`.
 
+## When the license expires
+
+Over the last six weeks before expiry, admins see a banner above every page as a reminder to renew.
+
+When the license expires, is suspended, or fails validation, the server keeps running as the Community Edition.
+Enterprise features stop at that moment and the Community Edition limits apply, and every signed-in user sees a notice that cannot be dismissed.
+
+A license that fails validation at startup does not stop the server either.
+Ricochet starts as the Community Edition, checks the license again every hour, and applies it once it validates.
+
 ## Managed hosting
 
 [Ricochet Cloud](https://cloud.ricochet.rs) runs the server for you, with a free 14-day trial and billing by usage, so it needs no license.

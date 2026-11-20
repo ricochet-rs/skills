@@ -36,6 +36,13 @@ if __name__ == "__main__":
 
 For `python-service`, start any Python web server the same way, for example `uvicorn.run(app, host="0.0.0.0", port=int(os.environ["PORT"]))`.
 
+## Apps with a live browser connection (`python-app`)
+
+Use `python-app` for apps that keep a WebSocket open to each browser, such as Panel.
+Ricochet runs `python <entrypoint>`, so the script must start the server on the host and port in `HOST` and `PORT`.
+Nothing runs `panel serve` for it, so a Panel script that only marks objects `.servable()` starts no server; call `pn.serve(..., address=..., port=..., show=False)` instead.
+Ricochet counts each open browser session as one connection, as it does for Shiny.
+
 ## Tasks (`python`, `quarto-py`, `jupyter`)
 
 A `python` task runs the entrypoint script and exits, and its output is the run log.

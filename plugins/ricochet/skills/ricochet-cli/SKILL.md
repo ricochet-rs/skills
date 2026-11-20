@@ -1,6 +1,6 @@
 ---
 name: ricochet-cli
-description: Use for any request to deploy, publish, host, share, or put online a Shiny app, Plumber or plumber2 API, Ambiorix, FastAPI, Flask, Dash, Streamlit, Shiny for Python, Genie, or Dash.jl app, a Quarto or R Markdown report, a Jupyter notebook, or an R, Python, or Julia script, and for installing the `ricochet` CLI, getting a server, signing in, writing `_ricochet.toml`, environment variables, running and scheduling tasks, deleting content, and CLI errors.
+description: Use for any request to deploy, publish, host, share, or put online a Shiny app, Plumber or plumber2 API, Ambiorix, FastAPI, Flask, Dash, Streamlit, Shiny for Python, Panel, Genie, or Dash.jl app, a Quarto or R Markdown report, a Jupyter notebook, or an R, Python, or Julia script, and for installing the `ricochet` CLI, getting a server, signing in, writing `_ricochet.toml`, environment variables and secrets from Vault or Azure Key Vault, running and scheduling tasks, deleting content, and CLI errors.
 ---
 
 # Deploy with the Ricochet CLI
@@ -74,6 +74,7 @@ Choose the content type with these rules:
 - A `_server.yml` means `r-server` with `entrypoint = "_server.yml"`, even beside an `app.R`, because `app.R` alone deploys as Shiny.
 - A `.qmd` or `_quarto.yml` is `quarto-r`, `quarto-py`, or `quarto-jl`, matching the language that renders it.
 - A Python web framework has its own type: `fast-api`, `flask`, `streamlit`, `dash`, or `shiny-py`.
+- A Python app that keeps a WebSocket open to each browser, such as Panel, is `python-app`.
 - A script that runs and exits is a task: `r`, `python`, or `julia`.
 
 `slug` sets the address, `https://<server>/app/<slug>`, using letters, digits, `-`, and `_`.
@@ -206,6 +207,7 @@ ricochet app deployment list <ID> --fields all
 ricochet app deployment get <DEPLOYMENT_ID>
 ```
 
+`ricochet log --deployment <DEPLOYMENT_ID> -n all` prints a deployment's package install log, and `ricochet log <LOG_ID>` streams any log by its ID.
 `ricochet app stop` without an instance stops every instance of the item.
 `ricochet app toml` shows the item's settings as the server has them.
 
@@ -220,12 +222,15 @@ Tasks run and exit: `r`, `rmd`, `quarto-r`, `python`, `quarto-py`, `jupyter`, `j
 ricochet task list
 ricochet task invoke <ID>
 ricochet task invoke <ID> --wait
+ricochet task invoke <ID> --follow
 ricochet task invocation get <ID> <INVOCATION_ID>
 ricochet task schedule <ID> "0 9 * * 1-5"
 ```
 
 - `task invoke` starts a run and prints its ID.
 - `--wait` waits for the run to finish and exits non-zero when it fails, so a task can be a CI step.
+- `--follow` does the same while streaming the run's output, which is the way to see why a run failed.
+- A run's ID is also its log ID, so `ricochet log <INVOCATION_ID> -n all` prints an earlier run's output.
 - `task invocation get` shows one run's status.
 - `task schedule` checks the cron expression and prints the next run time in UTC.
 
@@ -271,6 +276,34 @@ ricochet app env-vars replace API_TOKEN=abc
 - A bare `KEY` reads its value from `.env`, `.Renviron`, or the environment.
 
 The same commands work under `ricochet task`.
+
+### Secrets from a secret store
+
+Users connect HashiCorp Vault, OpenBao, or Azure Key Vault on the server's **Integrations** page.
+Ricochet reads each secret into an environment variable when the app starts or the task runs, and never stores the value.
+
+`env-vars set` cannot add these.
+Add them with **Add from integration** on the item's **Environment Variables** page, or list them in `_ricochet.toml`:
+
+```toml
+[[integrations.vault]]
+integration = "Analytics Vault"
+secrets = [
+  { path = "myapp/db", key = "password", env_var = "DB_PASSWORD" },
+]
+
+[[integrations.azure_key_vault]]
+integration = "Analytics Key Vault"
+secrets = [
+  { name = "smtp-password", env_var = "SMTP_PASSWORD" },
+]
+```
+
+- `integration` is the name on the **Integrations** page. A Vault secret takes a `path` relative to the KV mount and a `key`, and an Azure secret takes a `name`.
+- The first deploy reads these tables. After that, `ricochet app settings update` adds secrets and points existing variables at new ones, but never removes one, so remove a variable on the **Environment Variables** page.
+- `ricochet app toml <ID>` lists every secret the item reads, including those added in the web UI.
+- Each variable name has one source, so it cannot be both set with `env-vars` and read from an integration.
+- When Ricochet cannot read a secret, the app does not start, and its loading page names the integration and the reason.
 
 ## Errors
 

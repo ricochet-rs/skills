@@ -29,12 +29,11 @@ Register Ricochet with the provider as a web application:
 | --- | --- | --- |
 | `issuer_url` | Yes | The provider's issuer, starting with `https://` |
 | `client_id` | Yes | The client ID from the provider |
-| `client_secret` | No | Leave it out to register Ricochet as a public client. Entra group sync needs it. |
+| `client_secret` | No | Leave it out to register Ricochet as a public client. |
 | `redirect_url` | No | Defaults to `url` plus `/oauth/callback` when `url` is set |
 | `display_name_claim` | No | Claim used as the user's name. Default `preferred_username`. |
-| `groups_claim` | No | Claim that lists the user's groups. Leave it out to skip group sync. |
-| `provider` | No | `"entra"` for Microsoft Entra ID, otherwise leave it out |
-| `sync_interval` | No | Minutes between background group syncs. Entra only. |
+| `groups_claim` | No | Claim that lists the user's groups. Leave it out to skip group sync, or with `provider = "entra"`, where Ricochet reads groups from Microsoft Graph. |
+| `provider` | No | `"entra"` for Microsoft Entra ID, which reads groups and photos from Microsoft Graph at sign-in. Otherwise leave it out. |
 
 Ricochet identifies each user by the token's `sub` claim.
 Read [references/providers.md](references/providers.md) for Microsoft Entra ID, Auth0, Okta, Keycloak, and Google.
@@ -60,10 +59,10 @@ groups_attribute = "groups"
 
 ## Groups
 
-With `groups_claim` or `groups_attribute` set, Ricochet reads the user's groups at every sign-in.
+With `groups_claim` or `groups_attribute` set, or with `provider = "entra"`, Ricochet reads the user's groups at every sign-in.
 Content owners can then share an item with a group in its collaborators dialog.
 
-- A user sees group changes at their next sign-in, unless Entra background sync is on.
+- A user sees group changes at their next sign-in.
 - The group name typed in Ricochet must match the provider's value exactly, including case.
 - Some providers send group IDs rather than names, so check one user's token before sharing with a group.
 
