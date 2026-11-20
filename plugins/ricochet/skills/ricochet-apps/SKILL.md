@@ -1,6 +1,6 @@
 ---
 name: ricochet-apps
-description: Use for questions about making an app, report, notebook, or script work once deployed, such as keeping a SQLite or DuckDB database or other files across deployments, which content type or entrypoint to use, which port to listen on, links that break under `/app/<id>`, or serving a rendered report as a website, for Shiny, Plumber, plumber2, Ambiorix, FastAPI, Flask, Dash, Streamlit, Shiny for Python, Genie, Dash.jl, HTTP.jl, Quarto, R Markdown, Jupyter, and R, Python, or Julia scripts.
+description: Use for questions about making an app, report, notebook, or script work once deployed, such as keeping a SQLite or DuckDB database or other files across deployments, which content type or entrypoint to use, which port to listen on, links that break under `/app/<id>`, or serving a rendered report as a website, for Shiny, Plumber, plumber2, Ambiorix, FastAPI, Flask, Dash, Streamlit, Shiny for Python, Panel, Genie, Dash.jl, HTTP.jl, Quarto, R Markdown, Jupyter, and R, Python, or Julia scripts.
 ---
 
 # Build content for Ricochet
@@ -15,7 +15,7 @@ Use the `ricochet-cli` skill to write `_ricochet.toml` and deploy.
 Read the reference for the language before changing app code:
 
 - [references/r.md](references/r.md) for Shiny, golem, Plumber, plumber2, Ambiorix, R Markdown, and R scripts
-- [references/python.md](references/python.md) for FastAPI, Flask, Dash, Streamlit, Shiny for Python, Jupyter, and Python scripts
+- [references/python.md](references/python.md) for FastAPI, Flask, Dash, Streamlit, Shiny for Python, Panel, Jupyter, and Python scripts
 - [references/julia.md](references/julia.md) for Genie, Dash.jl, HTTP.jl, and Julia scripts
 
 ## Choose the content type
@@ -23,10 +23,11 @@ Read the reference for the language before changing app code:
 | Language | Apps | Tasks |
 | --- | --- | --- |
 | R | `shiny`, `rmd-shiny`, `quarto-r-shiny`, `plumber`, `ambiorix`, `r-server`, `r-service` | `r`, `rmd`, `quarto-r` |
-| Python | `shiny-py`, `fast-api`, `flask`, `dash`, `streamlit`, `python-service` | `python`, `quarto-py`, `jupyter` |
+| Python | `shiny-py`, `fast-api`, `flask`, `dash`, `streamlit`, `python-app`, `python-service` | `python`, `quarto-py`, `jupyter` |
 | Julia | `genie`, `julia-service` | `julia`, `quarto-jl` |
 
 Use the framework's own type whenever one exists.
+Use `python-app` for a Python app that keeps a WebSocket open to each browser, such as Panel.
 Fall back to `r-service`, `python-service`, or `julia-service` for any other HTTP server, which must bind the port itself.
 
 ## Bind the port
@@ -92,6 +93,8 @@ write(joinpath("persistent", "results.json"), JSON3.write(results))
 Several instances can write to `persistent/` at once, so use SQLite or one file per writer instead of appending to a shared file.
 Keep secrets in environment variables, never in `persistent/`.
 
+The item's **Files** tab in the web UI lists the files in the deployed bundle and in `persistent/`.
+
 ## Serve rendered output as a static site
 
 R Markdown, Quarto, and Jupyter tasks render to HTML.
@@ -104,10 +107,10 @@ index = "index.html"
 ```
 
 `output_dir` is where the render writes, relative to the bundle, and `index` defaults to `index.html`.
-A Quarto entrypoint of `_quarto.yml` renders the whole project, which is how websites and books deploy.
+Set the entrypoint to `_quarto.yml` to render a whole Quarto project, such as a website or a book.
 
 Jupyter output is always served as a static site.
-A task with `[static]` and `[schedule]` republishes the site on every run, which is how a daily report stays current.
+A task with both `[static]` and `[schedule]` republishes the site on every run, so a daily report stays current.
 
 ## Scale and size
 

@@ -33,8 +33,11 @@ Then check `/health` and `/ready` on port `6188`.
 - Set `groups_claim` or `groups_attribute`, and make the provider include groups in the token.
 - Users see group changes when they next sign in.
 - Group names in Ricochet must match the provider's values exactly, including case.
-- Entra sends group IDs, and omits all groups for users in more than about 200.
-- With Entra, set `provider = "entra"` and grant `Group.Read.All` to resolve group names.
+- The collaborators dialog lists a group only after one of its members has signed in.
+
+Entra works differently.
+Set `provider = "entra"` and leave `groups_claim` out, and Ricochet reads group names from Microsoft Graph, because the token holds only IDs.
+If the tenant blocks user consent, an administrator grants consent for the delegated `User.Read` permission.
 
 ## Every deployment fails while installing packages
 
@@ -61,4 +64,5 @@ Then check `/health` and `/ready` on port `6188`.
 | --- | --- |
 | The log says `per-item memory limits are not enforced` | Run the container with `--user 0`, as the `ricochet-install` skill describes. |
 | Items use too much memory by default | Set `[resources] default_memory_limit`. |
+| A Kubernetes task fails at once with `Kubernetes refused the pod` | A ResourceQuota or admission policy in the namespace refused it, and the message names the limit. Raise the quota, or lower the item's `[resources]`. |
 | Prometheus cannot reach `/metrics` | Set `metrics = "0.0.0.0:6189"` and open the port to the Prometheus host only. |

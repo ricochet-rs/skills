@@ -1,6 +1,6 @@
 ---
 name: ricochet-server-config
-description: Use for questions about configuring a self-hosted Ricochet server in ricochet-config.toml, such as where the file lives, overriding settings with environment variables, setting the public URL and ports, moving from SQLite to Postgres, storing encryption keys, limiting deployment history and bundle size, setting server-wide package repositories like CRAN or a private PyPI, default memory limits, or package install timeouts.
+description: Use for questions about configuring a self-hosted Ricochet server in ricochet-config.toml, such as where the file lives, overriding settings with environment variables, setting the public URL and ports, moving from SQLite to Postgres, storing encryption keys, limiting deployment history and bundle size, setting server-wide package repositories like CRAN or a private PyPI, default memory limits, package install timeouts, the time limit on task runs, or sending email notifications through an SMTP mail server.
 ---
 
 # Configure the server
@@ -23,7 +23,7 @@ RICOCHET_DATABASE__URL=postgres://ricochet:secret@db.example.com:5432/ricochet
 RICOCHET_NETWORK__PROXY_PORT=8080
 ```
 
-Use environment variables or a secret store for credentials rather than the file.
+Keep credentials in environment variables or a secret store, out of the file.
 
 ## Address and storage
 
@@ -96,20 +96,20 @@ secrets = "/etc/ricochet/secrets"
 ```
 
 Never run `ricochet secrets-init` for a server that already has data, because a new keypair cannot read the old values.
-A server that already stores encrypted values refuses to start without its keypair rather than creating a new one.
+A server that already stores encrypted values will not start without its keypair, and never creates a new one in its place.
 
 ## Deployment history
 
 ```toml
 [retention]
-max_deployments = 20
+max_deployments = 10
 max_age_days = 90
 max_bundle_size = "100mb"
 ```
 
 - A cleanup runs daily at 05:00 UTC and removes old bundles past either limit.
 - The latest successful deployment is always kept.
-- `max_deployments` defaults to `20`, and `max_age_days` has no default.
+- `max_deployments` defaults to `5`, and `max_age_days` has no default.
 - An item's own `[retention]` can only make these stricter.
 - `max_bundle_size` is the largest bundle a deploy can upload, server-wide only, and defaults to `"100mb"`.
 
@@ -128,6 +128,44 @@ default_memory_limit = "4Gi"
 - `restore.concurrency` is how many deployments install packages at once on this server, with a default based on the machine's memory.
 - `resources.default_memory_limit` applies to items that set no memory limit of their own.
 - On a host install without `default_memory_limit`, an item may use up to half the machine's memory.
+
+## Task time limit
+
+```toml
+[tasks]
+max_duration = 21600
+```
+
+Ricochet stops a task run after `max_duration` seconds, `3600` by default, and marks it cancelled.
+The limit covers scheduled and manual runs on every backend, and a task's own `[schedule] max_duration` replaces it.
+
+## Email
+
+Ricochet emails editors when it cannot deploy or run their item, and can email everyone who can open a task after a successful run.
+It sends nothing until `[smtp]` names a mail server:
+
+```toml
+[smtp]
+host = "smtp.example.com"
+username = "ricochet"
+password = "..."
+from = "ricochet <ricochet@example.com>"
+```
+
+| Key | Meaning |
+| --- | --- |
+| `host` | The mail server's hostname or IP address, with no scheme or port |
+| `port` | Defaults to `587` with `starttls`, `465` with `tls`, and `25` with `none` |
+| `tls` | `"starttls"` (default), `"tls"`, or `"none"` for a relay on a trusted network |
+| `username`, `password` | The account Ricochet signs in with, when the mail server needs one |
+| `from` | The sender on every email |
+| `reply_to` | Where replies go. Defaults to `from`. |
+
+- Set the password with `RICOCHET_SMTP__PASSWORD` to keep it out of the file.
+- To check the settings, restart Ricochet, open **Server Settings**, then **Email**, and select **Send me a test**. The email goes to your own address, and if the mail server refuses it, the page shows the reason.
+- Ricochet retries a failed email four more times over half an hour.
+- Without `[smtp]`, the web UI hides every email setting.
+- Users choose which email they get in their profile and in each item's settings.
 
 ## Package repositories
 

@@ -1,6 +1,6 @@
 ---
 name: ricochet-scheduling
-description: Use for any question about how to schedule a Python, R, or Julia script, set up a cron job, or make a script, Quarto or R Markdown report, or Jupyter notebook run automatically, such as nightly, every weekday morning, hourly, or monthly, by deploying it to Ricochet as a scheduled task, including writing the cron expression, converting local times to UTC, and changing or removing the schedule later.
+description: Use for any question about how to schedule a Python, R, or Julia script, set up a cron job, or make a script, Quarto or R Markdown report, or Jupyter notebook run automatically, such as nightly, every weekday morning, hourly, or monthly, by deploying it to Ricochet as a scheduled task, including writing the cron expression, converting local times to UTC, changing or removing the schedule later, and emailing the result or attached files after each run.
 ---
 
 # Schedule a task
@@ -32,17 +32,15 @@ Editing it later and redeploying does not change the schedule.
 
 ## Change the schedule after the first deploy
 
-Use any one of these:
-
 ```sh
 ricochet task schedule <ID> "30 6 * * 1-5"
-ricochet task settings update
 ```
 
 `ricochet task schedule` checks the expression locally and prints the next run time in UTC.
-`ricochet task settings update` applies the `[schedule]` from the local `_ricochet.toml`, so update the file first.
+`ricochet task settings update` does not send `[schedule]`, so editing the file and running it leaves the schedule unchanged.
 
-After changing it with `ricochet task schedule`, also update `[schedule]` in the local file so it matches the server.
+After changing it, also update `[schedule]` in the local file so it matches the server.
+The task's overview page in the web UI shows the next run time.
 
 From code, `PATCH /api/v0/content/<ID>/schedule` with `{"schedule": "30 6 * * 1-5"}` does the same, as described in the `ricochet-rest-api` skill.
 
@@ -73,11 +71,36 @@ Five fields, or six with a leading seconds field:
 
 ## Patterns
 
-- **A report that refreshes itself**: add `[static]` to a scheduled R Markdown, Quarto, or Jupyter task, and each run republishes the HTML at the same URL.
-- **A script that accumulates data**: write results under `persistent/`, which survives redeploys, and append to a SQLite database rather than a shared text file.
-- **Credentials for the job**: set them with `ricochet task env-vars set`, never in the script.
+- To keep a report current, add `[static]` to a scheduled R Markdown, Quarto, or Jupyter task. Each run republishes the HTML at the same URL.
+- To collect data across runs, write results under `persistent/`, which survives redeploys, and append to a SQLite database instead of a shared text file.
+- Set the job's credentials with `ricochet task env-vars set`, never in the script.
 
-## Things to know
+## Email the result
+
+Ricochet can email people after a run once the server admin has set up a mail server.
+Without one, the web UI shows no email settings, so ask the admin.
+
+- Every new task emails its owners and editors when a run fails, with the end of the log.
+- A task set to send success email also emails everyone who can open it, with a subject, a Markdown message, and files from the run's output attached, up to 20 MiB in total.
+
+Set it on the task's **Settings**, then **Email** tab, or from code with `PUT /api/v0/content/<ID>/email` and a key with `content.settings`:
+
+```json
+{
+  "preference": "all",
+  "subject": "{name} for {date}",
+  "body": "This week's report is attached.",
+  "attachments": ["report.pdf", "data/*.csv"]
+}
+```
+
+- `preference` is `failure` (the default), `success`, `all`, or `none`.
+- `{name}` and `{date}` in the subject become the task's name and the run's date.
+- `attachments` are paths or glob patterns inside the run's output, where `**` matches across folders. Hidden files are never attached.
+- The `PUT` replaces every field, so read the current settings with `GET` on the same path first.
+- Editors choose which email each collaborator gets on the item's **Collaborators** tab, and users can turn their own email down in their profile.
+
+## Runs
 
 - A run cannot take parameters.
 - A script that needs settings reads them from environment variables or a file in the bundle.

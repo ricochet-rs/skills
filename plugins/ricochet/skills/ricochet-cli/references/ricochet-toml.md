@@ -42,9 +42,10 @@ Tasks only.
 | Key | Notes |
 | --- | --- |
 | `cron` | A cron expression such as `0 9 * * 1-5`, or `@hourly`, `@daily`, `@weekly`, `@monthly`. Runs in UTC. |
+| `max_duration` | Seconds a run may take before Ricochet stops it. Replaces the server's limit, one hour by default, for this task. Works without `cron`. |
 
-The server reads `[schedule]` when it creates the item.
-Change it later with `ricochet task schedule` or `ricochet task settings update`.
+The server reads `[schedule]` when it creates the item, and `ricochet task settings update` never sends it.
+Change `cron` later with `ricochet task schedule`, and `max_duration` in the task's settings in the web UI.
 
 ## `[serve]`
 
@@ -94,7 +95,7 @@ Unset keys use the server's defaults.
 | `cpu_limit` | `"2"` | Same format |
 | `memory_request` | `"512Mi"` | `Ki`, `Mi`, or `Gi` suffix |
 | `memory_limit` | `"2Gi"` | Same format |
-| `restore_timeout` | `1800` | Seconds allowed for installing packages. `0` removes the limit. |
+| `restore_timeout` | `1800` | Seconds allowed for installing packages. `0` removes the limit. Read on the first deploy only. |
 
 ## `[repositories]`
 
@@ -113,8 +114,23 @@ These can only be stricter than the server's own policy.
 
 | Key | Notes |
 | --- | --- |
-| `max_deployments` | Deployments kept. The server default is `20`. |
+| `max_deployments` | Deployments kept. The server default is `5`. |
 | `max_age_days` | Deployments older than this are removed |
+
+## `[[integrations.vault]]` and `[[integrations.azure_key_vault]]`
+
+Secrets read from a HashiCorp Vault, OpenBao, or Azure Key Vault integration into environment variables.
+Each entry names an `integration` from the server's **Integrations** page and lists its `secrets`:
+
+| Field | Notes |
+| --- | --- |
+| `path`, `key` | Vault only. The secret's path relative to the KV mount, such as `myapp/db`, and the field inside it. |
+| `name` | Azure Key Vault only. The secret's name. |
+| `env_var` | The environment variable that receives the value |
+
+The first deploy reads these.
+Later, `ricochet app settings update` adds secrets and repoints variables, but never removes one.
+The file holds only where each secret is, never its value.
 
 ## `[env_vars]`
 
@@ -147,6 +163,7 @@ Apps keep running and serve requests.
 | `flask` | Python | app | `.py` that serves on `PORT` |
 | `dash` | Python | app | `.py` that serves on `PORT` |
 | `streamlit` | Python | app | `.py` |
+| `python-app` | Python | app | `.py` that serves on `HOST` and `PORT`, keeping a WebSocket open to each browser |
 | `python-service` | Python | app | `.py` that serves on `PORT` |
 | `julia` | Julia | task | `.jl` |
 | `quarto-jl` | Julia | task | `.qmd` or `_quarto.yml` |
